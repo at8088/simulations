@@ -2,7 +2,7 @@ package test;
 import gui.GUISimulator;
 import java.awt.Color;
 
-import Balls.BallsSimulator;
+import balls.BallsSimulator;
 
 public class TestBallsSimulator {
 	public static void main(String[] args) {

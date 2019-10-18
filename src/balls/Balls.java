@@ -1,4 +1,4 @@
-package Balls;
+package balls;
 import java.awt.Point;
 
 public class Balls {
@@ -58,9 +58,4 @@ public class Balls {
 	public Point[] getBalls_tab() {
 		return balls_tab;
 	}
-
-	public void print() {
-		System.out.println(this.toString());
-	}
-
 }

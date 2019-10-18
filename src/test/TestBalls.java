@@ -1,7 +1,7 @@
 package test;
 import java.awt.Point;
 
-import Balls.Balls;
+import balls.Balls;
 
 public class TestBalls {
 	public static void main(String[] args) {
