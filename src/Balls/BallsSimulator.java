@@ -16,6 +16,10 @@ public class BallsSimulator implements Simulable {
 			 tab[i] = new Point(100 + i*10, 100 + i*10);
 		 }
 		 this.balls = new Balls(tab);
+		 this.balls.setDirection(0, 1, 1);
+		 this.balls.setDirection(1, -1, 1);
+		 this.balls.setDirection(2, 0, 1);
+		 
 		 this.gui = gui;
 		 for (Point ball : this.balls.getBalls_tab()) {
 			 gui.addGraphicalElement(new Oval(ball.x, ball.y, Color.decode("#1f77b4"), Color.decode("#1f77b4"), 10));
