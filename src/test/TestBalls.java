@@ -14,13 +14,13 @@ public class TestBalls {
 
 		System.out.println(test);
 
-		test.translater(1, 1);
+		test.translater(1, 1, 0, 0);
 		System.out.println(test);
 
 		test.reInit();
 		System.out.println(test);
 
-		test.translater(10, 5);
+		test.translater(10, 5, 0, 0);
 		System.out.println(test);
 
 		test.reInit();
