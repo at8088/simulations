@@ -9,14 +9,12 @@ public class CellulesSimulator implements Simulable {
 	private Cellules cellules;
 	private int[] buffer; // pour stocker l'etat futur, buffer[i] contient l'etat futur de la ieme cellule
 	private GUISimulator gui;
-	private int taille_x; // nombre de cellules sur une ligne
-	private int taille_y; // sur une colonne
+	private int taille; // nombre de cellules par lignes et par colonnes
 
-	public CellulesSimulator(GUISimulator gui, int taille_x, int taille_y, Cellules cellules) {
+	public CellulesSimulator(GUISimulator gui, int taille, Cellules cellules) {
 		this.cellules = cellules;
 		this.gui = gui;
-		this.taille_x = taille_x;
-		this.taille_y = taille_y;
+		this.taille = taille;
 		buffer = new int[cellules.getTab().length]; // on alloue la memoire pour le buffer 
 		
 		affiche(); // affichage initial
@@ -37,21 +35,21 @@ public class CellulesSimulator implements Simulable {
 	/** Renvoie l'etat suivant de la cellule correspondant a cette indice */
 	private int etat_suivant(int indice) { 
 		int compteur = 0;
-		int i = indice / this.taille_x;
-		int j = indice % this.taille_x;
-		int i_inf = i == 0 ? this.taille_x - 1 : i - 1;
-		int j_inf = j == 0 ? this.taille_y - 1 : j -1;
-		int i_sup = i == this.taille_x - 1 ? 0 : i + 1;
-		int j_sup = j == this.taille_x - 1 ? 0 : j + 1;
+		int i = indice / this.taille;
+		int j = indice % this.taille;
+		int i_inf = i == 0 ? this.taille - 1 : i - 1;
+		int j_inf = j == 0 ? this.taille - 1 : j -1;
+		int i_sup = i == this.taille - 1 ? 0 : i + 1;
+		int j_sup = j == this.taille - 1 ? 0 : j + 1;
 		
-		compteur += this.cellules.getEtats()[i_inf * this.taille_x + j_inf];
-		compteur += this.cellules.getEtats()[i * this.taille_x+ j_inf];
-		compteur += this.cellules.getEtats()[i_sup * this.taille_x+ j_inf];
-		compteur += this.cellules.getEtats()[i_inf * this.taille_x + j];
-		compteur += this.cellules.getEtats()[i_sup * this.taille_x + j];
-		compteur += this.cellules.getEtats()[i_inf * this.taille_x + j_sup];
-		compteur += this.cellules.getEtats()[i * this.taille_x + j_sup];
-		compteur += this.cellules.getEtats()[i_sup * this.taille_x + j_sup];
+		compteur += this.cellules.getEtats()[i_inf * this.taille + j_inf];
+		compteur += this.cellules.getEtats()[i * this.taille+ j_inf];
+		compteur += this.cellules.getEtats()[i_sup * this.taille+ j_inf];
+		compteur += this.cellules.getEtats()[i_inf * this.taille + j];
+		compteur += this.cellules.getEtats()[i_sup * this.taille + j];
+		compteur += this.cellules.getEtats()[i_inf * this.taille + j_sup];
+		compteur += this.cellules.getEtats()[i * this.taille + j_sup];
+		compteur += this.cellules.getEtats()[i_sup * this.taille + j_sup];
 		
 		return compteur >= 3 ? 1 : 0; // si plus de 3 voisins vivant alors, l'etat futur est vivante, sinon morte
 	}
