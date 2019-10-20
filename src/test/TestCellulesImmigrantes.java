@@ -18,17 +18,17 @@ public class TestCellulesImmigrantes {
 				tab[taille * i + j] = new Point(i * 10, j * 10);
 			}
 		}
-		int nbrEtats=4;
+		
 		
 		int etats[] = new int[taille * taille]; // on genere le tableau des etats aleatoirement
 		int random;
 		for (int i = 0; i < etats.length; i++) {
-			random = (int)(Math.random() * nbrEtats);
+			random = (int)(Math.random() * 4);
 			
 			etats[i] = random;
 		}
 		
-		CellulesImmigrantes cellules = new CellulesImmigrantes(tab,etats,nbrEtats);
+		CellulesImmigrantes cellules = new CellulesImmigrantes(tab,etats);
 		
 		gui.setSimulable(new CellulesImmigrantesSimulator(gui, taille, cellules));
 		
