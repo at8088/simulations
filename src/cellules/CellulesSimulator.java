@@ -20,7 +20,7 @@ public class CellulesSimulator implements Simulable {
 		affiche(); // affichage initial
 	}
 
-	/** Realise l'affichage initial */
+	/** Realise l'affichage */
 	private void affiche() {
 		for (int i = 0; i < this.cellules.getEtats().length; i++) {
 			if (this.cellules.getEtats()[i] == 1) {
@@ -79,15 +79,9 @@ public class CellulesSimulator implements Simulable {
 
 	@Override
 	public void restart() {
-		cellules.reInit();
+		cellules.reInit(this.taille);
 		this.gui.reset();
-		for (int i = 0; i < this.cellules.getEtats().length; i++) {
-			if (this.cellules.getEtats()[i] == 1) {
-				this.gui.addGraphicalElement(new Rectangle((int)(this.cellules.getTab()[i].getX()),
-						(int)(this.cellules.getTab()[i].getY()), Color.decode("#1f77b4"), 
-						Color.decode("#1f77b4"), 10));
-			}
-		 }
+		affiche();
 	}
 	
 }
