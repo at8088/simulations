@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import gui.GUISimulator;
 import gui.Simulable;
-
+import java.util.Random;
 import gui.Rectangle;
 
 public class SchellingSimulator implements Simulable {
@@ -17,15 +17,21 @@ public class SchellingSimulator implements Simulable {
 	private int Seuil;
 	
 	
-	public SchellingSimulator(GUISimulator gui, int taille, Schelling habitations) {
+	public SchellingSimulator(GUISimulator gui, int taille, Schelling habitations, int seuil) {
 		this.habitations = habitations;
 		this.gui = gui;
+		this.Seuil = seuil;
 		this.taille = taille;
 		buffer = new int[habitations.getTab().length];
 		races = new Color[this.habitations.getNbrRaces()];
 		races[0]=Color.WHITE;
 		for(int i=1; i<this.habitations.getNbrRaces();i++) {
-			races[i]=Color.WHITE.darker().darker();
+			Random rand = new Random();
+			float r = rand.nextFloat();
+			float g = rand.nextFloat();
+			float b = rand.nextFloat();
+			races[i]= new Color(r,g,b);
+			
 		}
 		affiche();
 	}

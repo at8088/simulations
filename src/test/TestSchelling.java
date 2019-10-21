@@ -30,7 +30,7 @@ public class TestSchelling {
 		
 		Schelling cellules = new Schelling(tab,etats,5);
 		
-		gui.setSimulable(new SchellingSimulator(gui, taille, cellules));
+		gui.setSimulable(new SchellingSimulator(gui, taille, cellules,3));
 		
 		
 		
