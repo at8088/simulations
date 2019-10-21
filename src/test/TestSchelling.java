@@ -3,18 +3,13 @@ package test;
 import java.awt.Color;
 import java.awt.Point;
 
-import cellules.Cellules;
-import cellules.CellulesSimulator;
 import gui.GUISimulator;
+import schelling.*;
 
-public class TestCellulesSimulator {
+public class TestSchelling {
 	public static void main(String[] args) {
-		int WIDTH = 600 , HEIGHT = 600;
-		GUISimulator gui = new GUISimulator(WIDTH, HEIGHT, Color.BLACK);
 		
-		/* les rectangles font 10 de largeur et de hauteur donc il y a 
-		 * 500/10 rectangles par lignes et par colonnes
-		 */
+		GUISimulator gui = new GUISimulator(500, 500, Color.WHITE);
 		int taille = 500 / 10;
 		
 		Point[] tab = new Point[taille * taille]; // on cree le tableau de point
@@ -24,15 +19,22 @@ public class TestCellulesSimulator {
 			}
 		}
 		
+		
 		int etats[] = new int[taille * taille]; // on genere le tableau des etats aleatoirement
 		int random;
 		for (int i = 0; i < etats.length; i++) {
-			random = (int)(Math.random() * 7);
-			etats[i] = random == 0 ? 1 : 0;
+			random = (int)(Math.random() * 5);
+			
+			etats[i] = random;
 		}
 		
-		Cellules cellules = new Cellules(tab, etats);
-		 
-		gui.setSimulable(new CellulesSimulator(gui, taille, cellules));
+		Schelling cellules = new Schelling(tab,etats,5);
+		
+		gui.setSimulable(new SchellingSimulator(gui, taille, cellules));
+		
+		
+		
+		
+		
 	}
 }

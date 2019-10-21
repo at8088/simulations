@@ -14,10 +14,6 @@ public class CellulesImmigrantes extends Cellules {
 		return nbrEtats;
 	}
 	
-	public int isInState(int indice ,int k) {
-		int var = (this.getEtats()[indice]==k) ? 1:0 ;
-		return var;
-	}
-
+	
 
 }

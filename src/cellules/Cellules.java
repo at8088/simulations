@@ -20,6 +20,12 @@ public class Cellules extends Balls {
 	public int[] getEtats() {
 		return etats;
 	}
+	
+	public int isInState(int indice ,int k) {
+		int var = (this.getEtats()[indice]==k) ? 1:0 ;
+		return var;
+	}
+
 
 	public void setEtats(int[] etats) {
 		this.etats = etats;
