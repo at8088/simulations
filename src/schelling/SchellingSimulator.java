@@ -15,7 +15,7 @@ public class SchellingSimulator implements Simulable {
 	private int taille; 
 	private Color races[];   
 	private int Seuil;
-	
+	 // races = blanc = etat 0 = habitaion vacante
 	
 	public SchellingSimulator(GUISimulator gui, int taille, Schelling habitations, int seuil) {
 		this.habitations = habitations;
@@ -23,15 +23,15 @@ public class SchellingSimulator implements Simulable {
 		this.Seuil = seuil;
 		this.taille = taille;
 		buffer = new int[habitations.getTab().length];
-		races = new Color[this.habitations.getNbrRaces()];
+		races = new Color[this.habitations.getNbrRaces() + 1];
 		races[0]=Color.WHITE;
-		for(int i=1; i<this.habitations.getNbrRaces();i++) {
+	
+		for(int i=1; i<this.habitations.getNbrRaces()+1;i++) {
 			Random rand = new Random();
 			float r = rand.nextFloat();
 			float g = rand.nextFloat();
 			float b = rand.nextFloat();
 			races[i]= new Color(r,g,b);
-			
 		}
 		affiche();
 	}
@@ -51,15 +51,19 @@ public class SchellingSimulator implements Simulable {
 			buffer[i] = etat_suivant(i);
 			
 			/*demenagement*/
+			
+		}
+		/*demenagement*/
+		for(int i=0 ; i < this.habitations.getTab().length;i++ ) {
 			if(etat_suivant(i)==0) {
-				for(int j=0 ; j<this.habitations.getEtats().length && j!=i;j++) {
-					if(this.habitations.getEtats()[j]==0) {
+				for(int j=0 ; j<this.habitations.getEtats().length ;j++) {
+					if(this.habitations.getEtats()[j]==0 && j!=i) {
 						buffer[j] = this.habitations.getEtats()[i];
+						 break;
 					}
 				}
 			}
 		}
-		
 		/* mise a jour du tableau des etats */
 		for (int i = 0; i < this.habitations.getTab().length; i++) {
 			this.habitations.getEtats()[i] = buffer[i];
