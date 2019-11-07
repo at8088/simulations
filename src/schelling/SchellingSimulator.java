@@ -4,6 +4,8 @@ import java.awt.Color;
 
 import gui.GUISimulator;
 import gui.Simulable;
+
+import java.util.LinkedList;
 import java.util.Random;
 import gui.Rectangle;
 
@@ -15,6 +17,7 @@ public class SchellingSimulator implements Simulable {
 	private int taille; 
 	private Color races[];   
 	private int Seuil;
+	private LinkedList<Integer> non_satisfait = new LinkedList<Integer>();
 	 // races = blanc = etat 0 = habitaion vacante
 	
 	public SchellingSimulator(GUISimulator gui, int taille, Schelling habitations, int seuil) {
@@ -40,38 +43,54 @@ public class SchellingSimulator implements Simulable {
 			this.gui.addGraphicalElement(new Rectangle((int)(this.habitations.getTab()[i].getX()),
 					(int)(this.habitations.getTab()[i].getY()), races[this.habitations.getEtats()[i]], 
 					races[this.habitations.getEtats()[i]], 10));
-		
 		}
 	}
-	
 	@Override
 	public void next() {
-		/* calcul de l'etat suivant */
+		int c=0;
+
 		for (int i = 0; i < this.habitations.getTab().length; i++) {
 			buffer[i] = etat_suivant(i);
-			
-			/*demenagement*/
-			
+			if (etat_suivant(i)==0 && this.habitations.getEtats()[i]!=0 ) {
+				non_satisfait.addFirst(i);
+			}		
+			if(this.habitations.getEtats()[i]==0) c++;
 		}
-		/*demenagement*/
-		for(int i=0 ; i < this.habitations.getTab().length;i++ ) {
-			if(etat_suivant(i)==0) {
-				for(int j=0 ; j<this.habitations.getEtats().length ;j++) {
-					if(this.habitations.getEtats()[j]==0 && j!=i) {
-						buffer[j] = this.habitations.getEtats()[i];
-						 break;
-					}
-				}
-			}
+		System.out.println(c);
+
+		c=0;
+		int j=0;
+		for(Integer i:non_satisfait) {
+			j=getRandomCelluleVide();
+			buffer[j] = this.habitations.getEtats()[i];	
 		}
-		/* mise a jour du tableau des etats */
-		for (int i = 0; i < this.habitations.getTab().length; i++) {
+		for (int i = 0; i < this.habitations.getEtats().length; i++) {
 			this.habitations.getEtats()[i] = buffer[i];
+			
 		}
-		
-		/* affichage*/
+		for (int i = 0; i < this.habitations.getEtats().length; i++) {
+			if(this.habitations.getEtats()[i]==0) c++;
+			
+		}
+		System.out.println(c);
+		non_satisfait.clear();
+
+
 		this.gui.reset();
 		affiche();		
+	}
+	
+	int getRandomCelluleVide() {
+		boolean cellule_trouvee=false;
+		int indice=0;
+		while(!cellule_trouvee) {
+
+			indice = (int)(Math.random() * this.habitations.getEtats().length);
+			if(this.habitations.getEtats()[indice] ==0 ) {
+				cellule_trouvee=true;	
+			}
+		}
+		return indice;
 	}
 
 	private int etat_suivant(int indice) {

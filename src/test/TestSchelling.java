@@ -23,14 +23,14 @@ public class TestSchelling {
 		int etats[] = new int[taille * taille]; // on genere le tableau des etats aleatoirement
 		int random;
 		for (int i = 0; i < etats.length; i++) {
-			random = (int)(Math.random() * 5);
+			random = (int)(Math.random() * 3);
 			
 			etats[i] = random;
 		}
 		
-		Schelling cellules = new Schelling(tab,etats,5);
+		Schelling cellules = new Schelling(tab,etats,2);
 		
-		gui.setSimulable(new SchellingSimulator(gui, taille, cellules,3));
+		gui.setSimulable(new SchellingSimulator(gui, taille, cellules,6));
 		
 		
 		
