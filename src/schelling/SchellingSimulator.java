@@ -65,16 +65,15 @@ public class SchellingSimulator implements Simulable {
 			}
 			
 		}
-		// int g =this.cellules_vides.removeFirst();
-		// System.out.println(g+" "+this.habitations.getEtats()[g]);
 		int size = cellules_vides.size();
+		System.out.println("sz2"+cellules_vides.size());
 		System.out.println("********"+satisfaits.size());
 		System.out.println("non satttttt"+non_satisfaits.size());
 		c=0;
 		int a,j=0;
-		while(!cellules_vides.isEmpty() && ! non_satisfaits.isEmpty()) {
-			j=cellules_vides.remove((int)Math.random()*size);
-			size--;
+		while(cellules_vides.size() > 0 && non_satisfaits.size() > 0) {
+			
+			j=cellules_vides.remove((int)Math.random()*cellules_vides.size());
 			a=non_satisfaits.remove();
 			buffer[j]=this.habitations.getEtats()[a];
 			cellules_vides.add(a);
@@ -84,14 +83,6 @@ public class SchellingSimulator implements Simulable {
 			this.habitations.getEtats()[i] = buffer[i];
 			
 		}
-		for (int i = 0; i < this.habitations.getEtats().length; i++) {
-			if(this.habitations.getEtats()[i]==0) c++;
-			
-		}
-		
-
-		System.out.println(c);
-
 		this.gui.reset();
 		affiche();		
 	}
