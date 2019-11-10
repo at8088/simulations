@@ -9,9 +9,12 @@ import schelling.*;
 
 public class TestSchelling {
 	public static void main(String[] args) {
+		int WIDTH = 500 , HEIGHT = 500;
+		int nbr_races = 3;
+		int seuil = 4;
 		LinkedList <Integer> cell_vides = new LinkedList<Integer>();
-		GUISimulator gui = new GUISimulator(500, 500, Color.WHITE);
-		int taille = 500 / 10;
+		GUISimulator gui = new GUISimulator(WIDTH, HEIGHT, Color.WHITE);
+		int taille = WIDTH / 10;
 		
 		Point[] tab = new Point[taille * taille]; // on cree le tableau de point
 		for (int i = 0; i < taille; i++) {
@@ -22,7 +25,7 @@ public class TestSchelling {
 		int etats[] = new int[taille * taille]; // on genere le tableau des etats aleatoirement
 		int random;
 		for (int i = 0; i < etats.length; i++) {
-			random = (int)(Math.random() * 3);
+			random = (int)(Math.random() * (nbr_races+1));
 			
 			etats[i] = random;
 			if (etats[i] == 0) {
@@ -30,13 +33,10 @@ public class TestSchelling {
 			
 			}
 		}
-		for (int i = 50; i < etats.length / 3; i++) {
-			etats[i] = i%2==0 ? 2:1;
-		}
+
+		Schelling cellules = new Schelling(tab,etats,nbr_races);
 		
-		Schelling cellules = new Schelling(tab,etats,2);
-		
-		gui.setSimulable(new SchellingSimulator(gui, taille, cellules,cell_vides,3));
+		gui.setSimulable(new SchellingSimulator(gui, taille, cellules,cell_vides,seuil));
 
 	}
 }

@@ -8,7 +8,7 @@ public class Schelling extends Cellules {
 	
 	public Schelling(Point[] tab, int[] etats , int nbrraces) {
 		super(tab, etats);
-		setNbrRaces(nbrraces);
+		nbrRaces = nbrraces;
 	}
 	@Override
 	public int isInState(int indice ,int k) {
@@ -18,14 +18,8 @@ public class Schelling extends Cellules {
 			return 0;
 		}
 	}
-
 	public int getNbrRaces() {
 		return nbrRaces;
 	}
-
-	public void setNbrRaces(int nbrRaces) {
-		this.nbrRaces = nbrRaces;
-	}
-	
 
 }
