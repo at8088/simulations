@@ -10,6 +10,14 @@ public class Schelling extends Cellules {
 		super(tab, etats);
 		setNbrRaces(nbrraces);
 	}
+	@Override
+	public int isInState(int indice ,int k) {
+		if(this.getEtats()[indice] == k || this.getEtats()[indice] == 0){
+			return 1;
+		}else{
+			return 0;
+		}
+	}
 
 	public int getNbrRaces() {
 		return nbrRaces;
@@ -18,16 +26,6 @@ public class Schelling extends Cellules {
 	public void setNbrRaces(int nbrRaces) {
 		this.nbrRaces = nbrRaces;
 	}
-	public boolean VoisinsVides(int indice) {
-		int compteur = 0;
-		int i = indice / this.getEtats().length;
-		int j = indice % this.getEtats().length;
-		int i_inf = i == 0 ? this.getEtats().length - 1 : i - 1;
-		int j_inf = j == 0 ? this.getEtats().length - 1 : j -1;
-		int i_sup = i == this.getEtats().length - 1 ? 0 : i + 1;
-		int j_sup = j == this.getEtats().length - 1 ? 0 : j + 1;
-		boolean var = false;
-		if(this.getEtats()[])
-	}
+	
 
 }

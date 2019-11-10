@@ -54,14 +54,11 @@ public class SchellingSimulator implements Simulable {
 		int c=0;
 
 		for (int i = 0; i < this.habitations.getTab().length; i++) {
-			if(this.habitations.getEtats()[i]!=0 && !satisfaits.contains(i)){
+			if(this.habitations.getEtats()[i]!=0 ){
 				buffer[i] = etat_suivant(i);
 				if (buffer[i]==0 ) {
 					non_satisfaits.addFirst(i);
-				}	
-				else if (buffer[i] == this.habitations.getEtats()[i]) {
-					satisfaits.add(i);
-				}	
+				}		
 			}
 			
 		}
