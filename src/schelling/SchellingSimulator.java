@@ -77,21 +77,76 @@ public class SchellingSimulator implements Simulable {
 		int compteur = 0;
 		int i = indice / this.taille;
 		int j = indice % this.taille;
-		int i_inf = i == 0 ? this.taille - 1 : i - 1;
-		int j_inf = j == 0 ? this.taille - 1 : j -1;
-		int i_sup = i == this.taille - 1 ? 0 : i + 1;
-		int j_sup = j == this.taille - 1 ? 0 : j + 1;
 		
-		compteur += 1- this.habitations.isInState(i_inf * this.taille + j_inf ,(this.habitations.getEtats()[indice] ));
-		compteur += 1- this.habitations.isInState(  i * this.taille+ j_inf  ,(this.habitations.getEtats()[indice] ));
-		compteur += 1- this.habitations.isInState( i_sup * this.taille+ j_inf, (this.habitations.getEtats()[indice] ));
-		compteur += 1- this.habitations.isInState( i_inf * this.taille + j   , (this.habitations.getEtats()[indice] ));
-		compteur += 1- this.habitations.isInState(  i_sup * this.taille + j  , (this.habitations.getEtats()[indice] ));
-		compteur += 1- this.habitations.isInState( i_inf * this.taille + j_sup , (this.habitations.getEtats()[indice] ));
-		compteur += 1- this.habitations.isInState(  i * this.taille + j_sup ,(this.habitations.getEtats()[indice] ));
-		compteur += 1- this.habitations.isInState( i_sup * this.taille + j_sup  ,(this.habitations.getEtats()[indice] ));
-
+		
+		if(i!=this.taille-1 && i!=0 && j != this.taille-1 && j!=0) {
+			int i_inf = i == 0 ? this.taille - 1 : i - 1;
+			int j_inf = j == 0 ? this.taille - 1 : j -1;
+			int i_sup = i == this.taille - 1 ? 0 : i + 1;
+			int j_sup = j == this.taille - 1 ? 0 : j + 1;
+			compteur += 1- this.habitations.isInState(i_inf * this.taille + j_inf ,(this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState(  i * this.taille+ j_inf  ,(this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState( i_sup * this.taille+ j_inf, (this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState( i_inf * this.taille + j   , (this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState(  i_sup * this.taille + j  , (this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState( i_inf * this.taille + j_sup , (this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState(  i * this.taille + j_sup ,(this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState( i_sup * this.taille + j_sup  ,(this.habitations.getEtats()[indice] ));
+			
+		}else if (i==0){
+			if(j==0) {
+				compteur += 1- this.habitations.isInState(0*this.taille + 1,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState(1*this.taille + 0,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState(1*this.taille + 1,(this.habitations.getEtats()[indice] ));
+				
+			}else if(j==this.taille-1) {
+				compteur += 1- this.habitations.isInState(0*this.taille + j-1,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState(1*this.taille + j-1,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState(1*this.taille + j,(this.habitations.getEtats()[indice] ));
+			}
+			else {
+				compteur += 1- this.habitations.isInState(i*this.taille + j+1,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState(i*this.taille + j-1,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState((i+1)*this.taille + j-1,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState((i+1)*this.taille + j,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState((i+1)*this.taille + j+1,(this.habitations.getEtats()[indice] ));
+			}
+			
+		}else if(i==this.taille-1){
+			if(j==0) {
+				compteur += 1- this.habitations.isInState((i-1)*this.taille + 0,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState((i-1)*this.taille + 1,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState(i*this.taille + 1,(this.habitations.getEtats()[indice] ));
+				
+			}else if(j==this.taille-1) {
+				compteur += 1- this.habitations.isInState(i*this.taille + j-1,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState((i-1)*this.taille + j-1,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState((i-1)*this.taille + j,(this.habitations.getEtats()[indice] ));
+			}
+			else {
+				compteur += 1- this.habitations.isInState(i*this.taille + j+1,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState(i*this.taille + j-1,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState((i-1)*this.taille + j-1,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState((i-1)*this.taille + j,(this.habitations.getEtats()[indice] ));
+				compteur += 1- this.habitations.isInState((i-1)*this.taille + j+1,(this.habitations.getEtats()[indice] ));
+			}
+		}else if(j==0) {
+			compteur += 1- this.habitations.isInState(i*this.taille + j+1,(this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState((i-1)*this.taille + j,(this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState((i-1)*this.taille + j+1,(this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState((i+1)*this.taille + j,(this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState((i+1)*this.taille + j+1,(this.habitations.getEtats()[indice] ));
+		}else if(j==this.taille-1) {
+			compteur += 1- this.habitations.isInState(i*this.taille + j-1,(this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState((i-1)*this.taille + j,(this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState((i-1)*this.taille + j-1,(this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState((i+1)*this.taille + j,(this.habitations.getEtats()[indice] ));
+			compteur += 1- this.habitations.isInState((i+1)*this.taille + j-1,(this.habitations.getEtats()[indice] ));
+		}
+		
 		return compteur >= Seuil ? 0  : this.habitations.getEtats()[indice]  ; 
+		
+		
 	}
 	@Override
 	public void restart() {
