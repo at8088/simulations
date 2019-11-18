@@ -26,7 +26,7 @@ public class BoidsSimulator extends BallsSimulator {
 		return a;
 	}
 	
-	/* Determine la relation entre i et j : NON_VOISIN, VOISIN, ou VOISIN_IMMEDIAT */
+	/* Determine la relation entre i et j : NON_VOISIN, VOISIN ou VOISIN_IMMEDIAT */
 	public Relation est_voisin(int i, int j) {
 		int p1_x = (int)this.getBalls().getTab()[i].getX();
 		int p1_y = (int)this.getBalls().getTab()[i].getY();
@@ -69,8 +69,8 @@ public class BoidsSimulator extends BallsSimulator {
 			}
 		}
 		
-		// Recadrement de la composante mass_center_x
 		if (nb_voisins > 0) {
+			// Recadrement de la composante mass_center_x
 			mass_center_x /= nb_voisins;
 			if ((int)balls.getTab()[indice].getX() < mass_center_x) mass_center_x = 1;
 			else if ((int)balls.getTab()[indice].getX() > mass_center_x) mass_center_x = -1;
