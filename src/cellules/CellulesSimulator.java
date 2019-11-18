@@ -68,13 +68,7 @@ public class CellulesSimulator implements Simulable {
 		
 		/* affichage*/
 		this.gui.reset();
-		for (int i = 0; i < this.cellules.getEtats().length; i++) {
-			if (this.cellules.getEtats()[i] == 1) {
-				this.gui.addGraphicalElement(new Rectangle((int)(this.cellules.getTab()[i].getX()),
-						(int)(this.cellules.getTab()[i].getY()), Color.decode("#1f77b4"), 
-						Color.decode("#1f77b4"), 10));
-			}
-		 }
+		affiche();
 	}
 
 	@Override

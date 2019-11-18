@@ -16,7 +16,7 @@ public class Balls {
 		}
 	}
 	
-	public void setDirection(int indice, int x, int y) {
+	public void setDirections(int indice, int x, int y) {
 		this.directions[indice][0] = x;
 		this.directions[indice][1] = y;
 	}
@@ -58,4 +58,10 @@ public class Balls {
 	public Point[] getTab() {
 		return tab;
 	}
+
+	public int[][] getDirections() {
+		return directions;
+	}
+	
+	
 }
