@@ -11,7 +11,7 @@ public class TestSchelling {
 	public static void main(String[] args) {
 		int WIDTH = 500 , HEIGHT = 500;
 		int nbr_races = 2;
-		int seuil = 7;
+		int seuil = 3;
 		LinkedList <Integer> cell_vides = new LinkedList<Integer>();
 		GUISimulator gui = new GUISimulator(WIDTH, HEIGHT, Color.WHITE);
 		int taille = WIDTH / 10;

@@ -4,9 +4,12 @@ import java.awt.Color;
 
 import gui.GUISimulator;
 import gui.Simulable;
+import immigration.CellImmSimuEvent;
 
 import java.util.LinkedList;
 import java.util.Random;
+
+import evenement.EventManager;
 import gui.Rectangle;
 
 public class SchellingSimulator implements Simulable {
@@ -19,12 +22,14 @@ public class SchellingSimulator implements Simulable {
 	private int Seuil;
 	private LinkedList<Integer> non_satisfaits = new LinkedList<Integer>();
 	private LinkedList<Integer> cellules_vides = new LinkedList<Integer>();
+	private EventManager manager;
 
 	public SchellingSimulator(GUISimulator gui, int taille, Schelling habitations, LinkedList<Integer> cell_vides,int seuil) {
 		this.habitations = habitations;
 		this.gui = gui;
 		this.Seuil = seuil;
 		this.taille = taille;
+		this.manager = new EventManager();
 		this.cellules_vides = cell_vides;
 		buffer = new int[habitations.getTab().length];
 		races = new Color[this.habitations.getNbrRaces() + 1];
@@ -39,7 +44,7 @@ public class SchellingSimulator implements Simulable {
 		}
 		affiche();
 	}
-	private void affiche() {
+	public void affiche() {
 		for (int i = 0; i < this.habitations.getEtats().length; i++) {
 			this.gui.addGraphicalElement(new Rectangle((int)(this.habitations.getTab()[i].getX()),
 					(int)(this.habitations.getTab()[i].getY()), races[this.habitations.getEtats()[i]], 
@@ -48,32 +53,54 @@ public class SchellingSimulator implements Simulable {
 	}
 	@Override
 	public void next() {
-		for (int i = 0; i < this.habitations.getTab().length; i++) {
-			if(this.habitations.getEtats()[i]!=0 ){
-				buffer[i] = etat_suivant(i);
-				if (buffer[i]==0 ) {
-					non_satisfaits.addFirst(i);
-				}		
-			}
-		}
+//		for (int i = 0; i < this.habitations.getTab().length; i++) {
+//			if(this.habitations.getEtats()[i]!=0 ){
+//				buffer[i] = etat_suivant(i);
+//				if (buffer[i]==0 ) {
+//					non_satisfaits.addFirst(i);
+//				}		
+//			}
+//		}
+//		
+//		System.out.println("nbr de familles non satisfaites = "+non_satisfaits.size());
+//		int a,j;
+//		while(cellules_vides.size() > 0 && non_satisfaits.size() > 0) {
+//			j=cellules_vides.remove((int)Math.random()*cellules_vides.size());
+//			a=non_satisfaits.remove();
+//			buffer[j]=this.habitations.getEtats()[a];
+//			cellules_vides.add(a);
+//		}
+//
+//		for (int i = 0; i < this.habitations.getEtats().length; i++) {
+//			this.habitations.getEtats()[i] = buffer[i];
+//		}
+//		this.gui.reset();
+//		affiche();		
+		this.manager.addEvent(new SchellingSimuEvent(this.manager.getCurrentDate()+1,this));
+		this.manager.next();
 		
-		System.out.println("nbr de familles non satisfaites = "+non_satisfaits.size());
-		int a,j;
-		while(cellules_vides.size() > 0 && non_satisfaits.size() > 0) {
-			j=cellules_vides.remove((int)Math.random()*cellules_vides.size());
-			a=non_satisfaits.remove();
-			buffer[j]=this.habitations.getEtats()[a];
-			cellules_vides.add(a);
-		}
-
-		for (int i = 0; i < this.habitations.getEtats().length; i++) {
-			this.habitations.getEtats()[i] = buffer[i];
-		}
-		this.gui.reset();
-		affiche();		
+		
 	}
 
-	private int etat_suivant(int indice) {
+	public Schelling getHabitations() {
+		return habitations;
+	}
+	public int[] getBuffer() {
+		return buffer;
+	}
+	public GUISimulator getGui() {
+		return gui;
+	}
+	public Color[] getRaces() {
+		return races;
+	}
+	public LinkedList<Integer> getNon_satisfaits() {
+		return non_satisfaits;
+	}
+	public LinkedList<Integer> getCellules_vides() {
+		return cellules_vides;
+	}
+	public int etat_suivant(int indice) {
 		int compteur = 0;
 		int i = indice / this.taille;
 		int j = indice % this.taille;
