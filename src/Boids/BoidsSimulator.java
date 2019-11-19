@@ -1,17 +1,17 @@
 package Boids;
 
 import java.awt.Color;
-import java.awt.Point;
 
 import balls.Balls;
-import balls.BallsSimulator;
+import cellules.Cellules;
+import cellules.CellulesSimulator;
 import gui.GUISimulator;
 import gui.Oval;
 
-public class BoidsSimulator extends BallsSimulator {
+public class BoidsSimulator extends CellulesSimulator {
 
-	public BoidsSimulator(GUISimulator gui, int taille_x, int taille_y, Balls balls) {
-		super(gui, taille_x, taille_y, balls);
+	public BoidsSimulator(GUISimulator gui, int taille, Cellules cellules) {
+		super(gui, taille, cellules);
 	}
 	
 	public enum Relation {
@@ -19,6 +19,20 @@ public class BoidsSimulator extends BallsSimulator {
 		VOISIN,
 		VOISIN_IMMEDIAT
 	};
+	
+	public enum Relation_espece {
+		MEME,
+		INFERIEURE,
+		SUPERIEURE
+	};
+	
+	/* Determine la relation entre i et j : meme espece, i espece inferieur, i espece superieure */
+	public Relation_espece est_espece(int i, int j) {
+		if (this.getCellules().getEtats()[i] == this.getCellules().getEtats()[j]) return Relation_espece.MEME;
+		if (this.getCellules().getEtats()[i] < this.getCellules().getEtats()[j]) return Relation_espece.INFERIEURE;
+		else return Relation_espece.SUPERIEURE;
+		
+	}
 	
 	/* Renvoie la valeur absolue de a*/
 	public int abs(int a) {
@@ -35,12 +49,17 @@ public class BoidsSimulator extends BallsSimulator {
 		return a;
 	}
 	
+	/* L'agent d'indice i mange l'agent d'indice j (il le transforme a vrai dire) */
+	public void manger(int i, int j) {
+		this.getCellules().getEtats()[j] = this.getCellules().getEtats()[i];
+	}
+	
 	/* Determine la relation entre i et j : NON_VOISIN, VOISIN ou VOISIN_IMMEDIAT */
 	public Relation est_voisin(int i, int j) {
-		int p1_x = (int)this.getBalls().getTab()[i].getX();
-		int p1_y = (int)this.getBalls().getTab()[i].getY();
-		int p2_x = (int)this.getBalls().getTab()[j].getX();
-		int p2_y = (int)this.getBalls().getTab()[j].getY();
+		int p1_x = (int)this.getCellules().getTab()[i].getX();
+		int p1_y = (int)this.getCellules().getTab()[i].getY();
+		int p2_x = (int)this.getCellules().getTab()[j].getX();
+		int p2_y = (int)this.getCellules().getTab()[j].getY();
 		
 		if (p1_x == p2_x && p1_y == p2_y) return Relation.NON_VOISIN;
 		if (abs(p1_x - p2_x) <= 20 && abs(p1_y - p2_y) <= 20) return Relation.VOISIN_IMMEDIAT;
@@ -59,23 +78,38 @@ public class BoidsSimulator extends BallsSimulator {
 		int new_x = 0;         // Nouvelle direction
 		int new_y = 0;
 		int nb_voisins = 0;
-		Balls balls = this.getBalls();
+		Balls balls = this.getCellules();
 		
 		/* Calcul brut des coordonnees correspondant aux trois forces */
 		for (int i = 0; i < balls.getTab().length; i++) {
-			if (est_voisin(indice, i) != Relation.NON_VOISIN) {
-				nb_voisins++;
-				mass_center_x += (int)balls.getTab()[i].getX();
-				mass_center_y += (int)balls.getTab()[i].getY();
-				dir_x += balls.getDirections()[i][0];
-				dir_y += balls.getDirections()[i][1];
+			Relation relation = est_voisin(indice, i);
+			Relation_espece relation_espece = est_espece(indice, i);
+			/* S'ils sont voisin et indice de la meme espece que i ou d'une espece superieure */
+			if (relation != Relation.NON_VOISIN && relation_espece != Relation_espece.SUPERIEURE) {
+				if (this.getCellules().getEtats()[indice] <= this.getCellules().getEtats()[i]) {
+					nb_voisins++;
+					mass_center_x += (int)balls.getTab()[i].getX();
+					mass_center_y += (int)balls.getTab()[i].getY();
+					dir_x += balls.getDirections()[i][0];
+					dir_y += balls.getDirections()[i][1];
+				}
 			}
-			if (est_voisin(indice, i) == Relation.VOISIN_IMMEDIAT) {
-				if ((int)balls.getTab()[i].getX() > (int)balls.getTab()[indice].getX()) escape_x -= 1;
-				else if ((int)balls.getTab()[i].getX() < (int)balls.getTab()[indice].getX()) escape_x += 1;
-				if ((int)balls.getTab()[i].getY() > (int)balls.getTab()[indice].getY()) escape_y -= 1;
-				else if ((int)balls.getTab()[i].getY() < (int)balls.getTab()[indice].getY()) escape_y += 1;
-			}
+			if (relation == Relation.VOISIN_IMMEDIAT) {
+				if (relation_espece == Relation_espece.MEME) {
+					if ((int)balls.getTab()[i].getX() > (int)balls.getTab()[indice].getX()) escape_x -= 1;
+					else if ((int)balls.getTab()[i].getX() < (int)balls.getTab()[indice].getX()) escape_x += 1;
+					if ((int)balls.getTab()[i].getY() > (int)balls.getTab()[indice].getY()) escape_y -= 1;
+					else if ((int)balls.getTab()[i].getY() < (int)balls.getTab()[indice].getY()) escape_y += 1;
+				}
+				// Si i voisin immediat et d'espece inferieure on le mange
+				else if (relation_espece == Relation_espece.INFERIEURE) {
+					manger(indice, i);
+				}
+				// SI i voisin immediat et d'espece superieure on se fait manger
+				else {
+					manger(i, indice);
+				}	
+			}	
 		}
 		
 		/* Calcul de la nouvelle direction de l'agent en fonction de ses voisins*/
@@ -113,26 +147,34 @@ public class BoidsSimulator extends BallsSimulator {
 		return tab;
 	}
 	
+	/* Realise l'affichage */
+	@Override
+	public void affiche() {
+		for (int i = 0; i < this.getCellules().getEtats().length; i++) {
+			if (this.getCellules().getEtats()[i] == 0){
+				this.getGui().addGraphicalElement(new Oval((int)this.getCellules().getTab()[i].getX(), (int)this.getCellules().getTab()[i].getY(), Color.decode("#1f77b4"), Color.decode("#1f77b4"), 10));
+			}
+			else this.getGui().addGraphicalElement(new Oval((int)this.getCellules().getTab()[i].getX(), (int)this.getCellules().getTab()[i].getY(), Color.decode("0xFF0096"), Color.decode("0xFF0096"), 10));
+		}
+	}
 	
 	@Override
 	public void next() {
-		Balls balls = this.getBalls();
+		Cellules cellules = this.getCellules();
 		int[] new_direction;
 		
 		/* Calcul des nouvelles directions de chaque agents */
-		for(int i = 0; i < balls.getTab().length; i++) {
+		for(int i = 0; i < cellules.getTab().length; i++) {
 			new_direction = new_dir(i);
-			balls.setDirections(i, new_direction[0], new_direction[1]);
+			cellules.setDirections(i, new_direction[0], new_direction[1]);
 		}
 		
 		/* On translate tous les agents */
-		balls.translater(10, 10, this.getTaille_x(), this.getTaille_y());
+		cellules.translater(10, 10, this.getTaille(), this.getTaille());
 		
 		/* affichage */
 		this.getGui().reset();
-		for (Point ball : this.getBalls().getTab()) {
-			this.getGui().addGraphicalElement(new Oval(ball.x, ball.y, Color.decode("#1f77b4"), Color.decode("#1f77b4"), 10));
-		 }
+		affiche();
 	}
 
 }

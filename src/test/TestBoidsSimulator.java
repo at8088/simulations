@@ -18,12 +18,16 @@ public class TestBoidsSimulator {
 		 for (int i = 0; i < nb_agents; i++) {
 			 tab[i] = new Point((int)(Math.random() * (500 + 1)), (int)(Math.random() * (500 + 1)));
 		 }
+		 int[] etats = new int[nb_agents];
+		 for (int i = 0; i < nb_agents; i++) { 
+			 etats[i] = (int)(Math.random() * 5); // si etats 
+		 }
 		 
-		 Boids boids = new Boids(tab);
+		 Boids boids = new Boids(tab, etats);
 		 for (int i = 0; i < nb_agents; i++) {
 			 boids.setDirections(i, (int)(1 - Math.random() * 2), (int)(1 - Math.random() * 2));
 		 }
 		 
-		gui.setSimulable(new BoidsSimulator(gui, 500, 500, boids));
+		gui.setSimulable(new BoidsSimulator(gui, 500, boids));
 	}
 }

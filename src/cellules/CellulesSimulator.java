@@ -21,7 +21,7 @@ public class CellulesSimulator implements Simulable {
 	}
 
 	/** Realise l'affichage */
-	private void affiche() {
+	public void affiche() {
 		for (int i = 0; i < this.cellules.getEtats().length; i++) {
 			if (this.cellules.getEtats()[i] == 1) {
 				this.gui.addGraphicalElement(new Rectangle((int)(this.cellules.getTab()[i].getX()),
@@ -69,6 +69,21 @@ public class CellulesSimulator implements Simulable {
 		/* affichage*/
 		this.gui.reset();
 		affiche();
+	}
+	
+	
+	public Cellules getCellules() {
+		return cellules;
+	}
+
+	public GUISimulator getGui() {
+		return gui;
+	}
+	
+	
+
+	public int getTaille() {
+		return taille;
 	}
 
 	@Override
