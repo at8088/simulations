@@ -26,6 +26,15 @@ public class BoidsSimulator extends BallsSimulator {
 		return a;
 	}
 	
+	/* Normalise une composante d'un vecteur */
+	public int normalise_vecteur(int a) {
+		if (a > 0) a = 1;
+		else if (a < 0) a = -1;
+		else a = 0;
+		
+		return a;
+	}
+	
 	/* Determine la relation entre i et j : NON_VOISIN, VOISIN ou VOISIN_IMMEDIAT */
 	public Relation est_voisin(int i, int j) {
 		int p1_x = (int)this.getBalls().getTab()[i].getX();
@@ -43,11 +52,11 @@ public class BoidsSimulator extends BallsSimulator {
 	public int[] new_dir(int indice) {
 		int mass_center_x = 0; // Force de cohésion
 		int mass_center_y = 0;
-		int dir_x = 0; // Force d'alignement
+		int dir_x = 0; 		   // Force d'alignement
 		int dir_y = 0;
-		int escape_x = 0; // Force de separation
+		int escape_x = 0;      // Force de separation
 		int escape_y = 0;
-		int new_x = 0;
+		int new_x = 0;         // Nouvelle direction
 		int new_y = 0;
 		int nb_voisins = 0;
 		Balls balls = this.getBalls();
@@ -69,53 +78,31 @@ public class BoidsSimulator extends BallsSimulator {
 			}
 		}
 		
+		/* Calcul de la nouvelle direction de l'agent en fonction de ses voisins*/
 		if (nb_voisins > 0) {
-			// Recadrement de la composante mass_center_x
+			// Normalisation de la composante mass_center_x
 			mass_center_x /= nb_voisins;
 			if ((int)balls.getTab()[indice].getX() < mass_center_x) mass_center_x = 1;
 			else if ((int)balls.getTab()[indice].getX() > mass_center_x) mass_center_x = -1;
 			else mass_center_x = 0;
 			
-			// Recadrement de la composante dir_y
+			// Normalisation de la composante dir_y
 			mass_center_y /= nb_voisins;
 			if ((int)balls.getTab()[indice].getY() < mass_center_y) mass_center_y = 1;
 			else if ((int)balls.getTab()[indice].getY() > mass_center_y) mass_center_y = -1;
 			else mass_center_y = 0;
 		
-			// Recadrement de la composante dir_x
-			if (dir_x > 0) dir_x = 1;
-			else if (dir_x < 0) dir_x = -1;
-			else dir_x = 0;
+			// Normalisation des vecteurs force d'alignement et force de separation
+			dir_x = normalise_vecteur(dir_x);
+			dir_y = normalise_vecteur(dir_y);
+			escape_x = normalise_vecteur(escape_x);
+			escape_y = normalise_vecteur(escape_y);
 			
-			// Recadrement de la composante dir_x
-			if (dir_y > 0) dir_y = 1;
-			else if (dir_y < 0) dir_y = -1;
-			else dir_y = 0;
-			
-			// Recadrement de la composante escape_x
-			if (escape_x > 0) escape_x= 1;
-			else if (escape_x < 0) escape_x = -1;
-			else escape_x = 0;
-			
-			// Recadrement de la composante escape_y
-			if (escape_y > 0) escape_y = 1;
-			else if (escape_y < 0) escape_y = -1;
-			else escape_y = 0;
-			
-			// On calcul la nouvelle direction
-			new_x = mass_center_x + dir_x + escape_x;
-			new_y = mass_center_y + dir_y + escape_y;
-			
-			// Recadrement de la nouvelle direction
-			if (new_x > 0) new_x = 1;
-			else if (new_x < 0) new_x = -1;
-			else new_x = 0;
-			
-			if (new_y > 0) new_y = 1;
-			else if (new_y < 0) new_y = -1;
-			else new_y = 0;
+			// Calcul et normalisation de la nouvelle direction
+			new_x = normalise_vecteur(mass_center_x + dir_x + escape_x);
+			new_y = normalise_vecteur(mass_center_y + dir_y + escape_y);
 		}
-		/* Si aucun voisin, on garde sa direction*/
+		/* Si l'agent n'a aucun voisin, il garde sa direction */
 		else { 
 			new_x = balls.getDirections()[indice][0];
 			new_y = balls.getDirections()[indice][1];
