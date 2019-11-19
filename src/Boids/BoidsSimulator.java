@@ -152,9 +152,9 @@ public class BoidsSimulator extends CellulesSimulator {
 	public void affiche() {
 		for (int i = 0; i < this.getCellules().getEtats().length; i++) {
 			if (this.getCellules().getEtats()[i] == 0){
-				this.getGui().addGraphicalElement(new Oval((int)this.getCellules().getTab()[i].getX(), (int)this.getCellules().getTab()[i].getY(), Color.decode("#1f77b4"), Color.decode("#1f77b4"), 10));
+				this.getGui().addGraphicalElement(new Oval((int)this.getCellules().getTab()[i].getX(), (int)this.getCellules().getTab()[i].getY(), Color.BLUE, Color.BLUE, 10));
 			}
-			else this.getGui().addGraphicalElement(new Oval((int)this.getCellules().getTab()[i].getX(), (int)this.getCellules().getTab()[i].getY(), Color.decode("0xFF0096"), Color.decode("0xFF0096"), 10));
+			else this.getGui().addGraphicalElement(new Oval((int)this.getCellules().getTab()[i].getX(), (int)this.getCellules().getTab()[i].getY(), Color.RED.darker(), Color.RED.darker(), 10));
 		}
 	}
 	

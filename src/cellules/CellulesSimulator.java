@@ -1,6 +1,9 @@
 package cellules;
 
 import java.awt.Color;
+
+
+import evenement.EventManager;
 import gui.GUISimulator;
 import gui.Rectangle;
 import gui.Simulable;
@@ -10,13 +13,15 @@ public class CellulesSimulator implements Simulable {
 	private int[] buffer; // pour stocker l'etat futur, buffer[i] contient l'etat futur de la ieme cellule
 	private GUISimulator gui;
 	private int taille; // nombre de cellules par lignes et par colonnes
+	private EventManager manager;
+	
 
 	public CellulesSimulator(GUISimulator gui, int taille, Cellules cellules) {
 		this.cellules = cellules;
 		this.gui = gui;
 		this.taille = taille;
 		buffer = new int[cellules.getTab().length]; // on alloue la memoire pour le buffer 
-		
+		 this.manager = new EventManager();
 		affiche(); // affichage initial
 	}
 
@@ -33,7 +38,7 @@ public class CellulesSimulator implements Simulable {
 
 	
 	/** Renvoie l'etat suivant de la cellule correspondant a cette indice */
-	private int etat_suivant(int indice) { 
+	public int etat_suivant(int indice) { 
 		int compteur = 0;
 		int i = indice / this.taille;
 		int j = indice % this.taille;
@@ -54,24 +59,35 @@ public class CellulesSimulator implements Simulable {
 		return compteur >= 3 ? 1 : 0; // si plus de 3 voisins vivant alors, l'etat futur est vivante, sinon morte
 	}
 	
+	public int[] getBuffer() {
+		return buffer;
+	}
+
 	@Override
 	public void next() {
-		/* calcul de l'etat suivant */
-		for (int i = 0; i < this.cellules.getTab().length; i++) {
-			buffer[i] = etat_suivant(i);
-		}
+//		/* calcul de l'etat suivant */
+//		for (int i = 0; i < this.cellules.getTab().length; i++) {
+//			buffer[i] = etat_suivant(i);
+//		}
+//		
+//		/* mise a jour du tableau des etats */
+//		for (int i = 0; i < this.cellules.getTab().length; i++) {
+//			this.cellules.getEtats()[i] = buffer[i];
+//		}
+//		
+//		/* affichage*/
+//		this.gui.reset();
+//		affiche();
 		
-		/* mise a jour du tableau des etats */
-		for (int i = 0; i < this.cellules.getTab().length; i++) {
-			this.cellules.getEtats()[i] = buffer[i];
-		}
-		
-		/* affichage*/
-		this.gui.reset();
-		affiche();
+		this.manager.addEvent(new CellSimuEvent(this.manager.getCurrentDate()+1,this));
+		this.manager.next();
 	}
 	
 	
+	public EventManager getManager() {
+		return manager;
+	}
+
 	public Cellules getCellules() {
 		return cellules;
 	}

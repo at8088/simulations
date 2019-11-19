@@ -5,6 +5,9 @@ import immigration.CellulesImmigrantes;
 import gui.GUISimulator;
 import gui.Rectangle;
 import gui.Simulable;
+import cellules.CellSimuEvent;
+import cellules.CellulesSimulator;
+import evenement.EventManager;
 
 public class CellulesImmigrantesSimulator implements Simulable {
 	
@@ -14,11 +17,12 @@ public class CellulesImmigrantesSimulator implements Simulable {
 	private GUISimulator gui;
 	private int taille; 
 	private Color couleurs[];
-	
+	private EventManager manager;
 	public CellulesImmigrantesSimulator(GUISimulator gui, int taille, CellulesImmigrantes cellules) {
 		this.cellules = cellules;
 		this.gui = gui;
 		this.taille = taille;
+		manager = new EventManager();
 		buffer = new int[cellules.getTab().length]; // on alloue la memoire pour le buffer 
 		couleurs = new Color[this.cellules.getNbrEtats()];
 		couleurs[0] = Color.WHITE;
@@ -42,7 +46,7 @@ public class CellulesImmigrantesSimulator implements Simulable {
 	
 	
 	
-	private int etat_suivant(int indice) { 
+	public int etat_suivant(int indice) { 
 		int compteur = 0;
 		int i = indice / this.taille;
 		int j = indice % this.taille;
@@ -67,22 +71,42 @@ public class CellulesImmigrantesSimulator implements Simulable {
 	
 	@Override
 	public void next() {
-		/* calcul de l'etat suivant */
-		for (int i = 0; i < this.cellules.getTab().length; i++) {
-			buffer[i] = etat_suivant(i);
-		}
-		
-		/* mise a jour du tableau des etats */
-		for (int i = 0; i < this.cellules.getTab().length; i++) {
-			this.cellules.getEtats()[i] = buffer[i];
-		}
-		
-		/* affichage*/
-		this.gui.reset();
-		affiche();
+//		/* calcul de l'etat suivant */
+//		for (int i = 0; i < this.cellules.getTab().length; i++) {
+//			buffer[i] = etat_suivant(i);
+//		}
+//		
+//		/* mise a jour du tableau des etats */
+//		for (int i = 0; i < this.cellules.getTab().length; i++) {
+//			this.cellules.getEtats()[i] = buffer[i];
+//		}
+//		
+//		/* affichage*/
+//		this.gui.reset();
+//		affiche();
+		this.manager.addEvent(new CellImmSimuEvent(this.manager.getCurrentDate()+1,this));
+		this.manager.next();
 		 
 		
 	}
+
+	public CellulesImmigrantes getCellules() {
+		return cellules;
+	}
+
+
+
+	public GUISimulator getGui() {
+		return gui;
+	}
+
+
+
+	public int[] getBuffer() {
+		return buffer;
+	}
+
+
 
 	@Override
 	public void restart() {

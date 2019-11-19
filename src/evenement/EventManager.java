@@ -30,6 +30,10 @@ public class EventManager {
 		}
 
 	}
+	public long getCurrentDate() {
+		return currentDate;
+	}
+
 	public boolean isFinished() {
 		return EventList.isEmpty();
 	}
