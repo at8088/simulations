@@ -2,6 +2,10 @@ package evenement;
 
 import java.util.Comparator;
 
+/**Comparateur des evenements. Il est utilisé pour le tri de la liste des evenements à executer.
+ * Le ciritere de comparaison est la date.
+ * */
+
 public class Comparateur implements Comparator<Event>{
 
 	@Override

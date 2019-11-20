@@ -20,7 +20,7 @@ public class TestBoidsSimulator {
 		 }
 		 int[] etats = new int[nb_agents];
 		 for (int i = 0; i < nb_agents; i++) { 
-			 etats[i] = (int)(Math.random() * 5); // si etats 
+			 etats[i] = (int)(Math.random() * 2); // si etats 
 		 }
 		 
 		 Boids boids = new Boids(tab, etats);

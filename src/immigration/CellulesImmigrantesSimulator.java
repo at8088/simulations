@@ -5,8 +5,7 @@ import immigration.CellulesImmigrantes;
 import gui.GUISimulator;
 import gui.Rectangle;
 import gui.Simulable;
-import cellules.CellSimuEvent;
-import cellules.CellulesSimulator;
+
 import evenement.EventManager;
 
 public class CellulesImmigrantesSimulator implements Simulable {
@@ -16,7 +15,7 @@ public class CellulesImmigrantesSimulator implements Simulable {
 	private int[] buffer;
 	private GUISimulator gui;
 	private int taille; 
-	private Color couleurs[];
+	private Color couleurs[]; // tableau des couleurs
 	private EventManager manager;
 	public CellulesImmigrantesSimulator(GUISimulator gui, int taille, CellulesImmigrantes cellules) {
 		this.cellules = cellules;
@@ -24,6 +23,8 @@ public class CellulesImmigrantesSimulator implements Simulable {
 		this.taille = taille;
 		manager = new EventManager();
 		buffer = new int[cellules.getTab().length]; // on alloue la memoire pour le buffer 
+		
+		//4etats donc 4 couleurs. couleur[i] est plus sombre que couleurs[i+1]
 		couleurs = new Color[this.cellules.getNbrEtats()];
 		couleurs[0] = Color.WHITE;
 		couleurs[1] = Color.LIGHT_GRAY;
@@ -33,7 +34,7 @@ public class CellulesImmigrantesSimulator implements Simulable {
 	}
 	
 	
-	
+	//affiche les cellules 
 	void affiche() {
 		for (int i = 0; i < this.cellules.getEtats().length; i++) {
 				this.gui.addGraphicalElement(new Rectangle((int)(this.cellules.getTab()[i].getX()),
@@ -48,9 +49,11 @@ public class CellulesImmigrantesSimulator implements Simulable {
 	
 	public int etat_suivant(int indice) { 
 		int compteur = 0;
-		int i = indice / this.taille;
-		int j = indice % this.taille;
-		int i_inf = i == 0 ? this.taille - 1 : i - 1;
+		int i = indice / this.taille;   //l'ordonnee
+		int j = indice % this.taille;	// l'abscisse
+		
+		// coordonnees des voisins avec gestions des cas des bords
+		int i_inf = i == 0 ? this.taille - 1 : i - 1; 
 		int j_inf = j == 0 ? this.taille - 1 : j -1;
 		int i_sup = i == this.taille - 1 ? 0 : i + 1;
 		int j_sup = j == this.taille - 1 ? 0 : j + 1;
@@ -71,6 +74,8 @@ public class CellulesImmigrantesSimulator implements Simulable {
 	
 	@Override
 	public void next() {
+		
+		/**ancien code*/
 //		/* calcul de l'etat suivant */
 //		for (int i = 0; i < this.cellules.getTab().length; i++) {
 //			buffer[i] = etat_suivant(i);
@@ -84,7 +89,10 @@ public class CellulesImmigrantesSimulator implements Simulable {
 //		/* affichage*/
 //		this.gui.reset();
 //		affiche();
+		
+		/**Ajouter un evenement qui s'executera au prochain appel de la methode next*/
 		this.manager.addEvent(new CellImmSimuEvent(this.manager.getCurrentDate()+1,this));
+		/**Executer l'evenement qui vient d'etre ajouter*/
 		this.manager.next();
 		 
 		

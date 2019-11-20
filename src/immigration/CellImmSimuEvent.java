@@ -8,7 +8,6 @@ public class CellImmSimuEvent extends Event {
 	public CellImmSimuEvent(long date , CellulesImmigrantesSimulator s) {
 		super(date);
 		sim = s;
-		
 	}
 	@Override
 	public void execute() {

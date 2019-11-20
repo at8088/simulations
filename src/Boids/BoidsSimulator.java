@@ -10,8 +10,10 @@ import gui.Oval;
 
 public class BoidsSimulator extends CellulesSimulator {
 
+
 	public BoidsSimulator(GUISimulator gui, int taille, Cellules cellules) {
 		super(gui, taille, cellules);
+		this.getManager().reInitCurrentDate();
 	}
 	
 	public enum Relation {
@@ -31,7 +33,6 @@ public class BoidsSimulator extends CellulesSimulator {
 		if (this.getCellules().getEtats()[i] == this.getCellules().getEtats()[j]) return Relation_espece.MEME;
 		if (this.getCellules().getEtats()[i] < this.getCellules().getEtats()[j]) return Relation_espece.INFERIEURE;
 		else return Relation_espece.SUPERIEURE;
-		
 	}
 	
 	/* Renvoie la valeur absolue de a*/
@@ -75,6 +76,8 @@ public class BoidsSimulator extends CellulesSimulator {
 		int dir_y = 0;
 		int escape_x = 0;      // Force de separation
 		int escape_y = 0;
+		int chasse_x = 0;
+		int chasse_y = 0;
 		int new_x = 0;         // Nouvelle direction
 		int new_y = 0;
 		int nb_voisins = 0;
@@ -109,7 +112,7 @@ public class BoidsSimulator extends CellulesSimulator {
 				else {
 					manger(i, indice);
 				}	
-			}	
+			}
 		}
 		
 		/* Calcul de la nouvelle direction de l'agent en fonction de ses voisins*/
@@ -160,21 +163,23 @@ public class BoidsSimulator extends CellulesSimulator {
 	
 	@Override
 	public void next() {
-		Cellules cellules = this.getCellules();
-		int[] new_direction;
-		
-		/* Calcul des nouvelles directions de chaque agents */
-		for(int i = 0; i < cellules.getTab().length; i++) {
-			new_direction = new_dir(i);
-			cellules.setDirections(i, new_direction[0], new_direction[1]);
-		}
-		
-		/* On translate tous les agents */
-		cellules.translater(10, 10, this.getTaille(), this.getTaille());
-		
-		/* affichage */
-		this.getGui().reset();
-		affiche();
+//		Cellules cellules = this.getCellules();
+//		int[] new_direction;
+//		
+//		/* Calcul des nouvelles directions de chaque agents */
+//		for(int i = 0; i < cellules.getTab().length; i++) {
+//			new_direction = new_dir(i);
+//			cellules.setDirections(i, new_direction[0], new_direction[1]);
+//		}
+//		
+//		/* On translate tous les agents */
+//		cellules.translater(10, 10, this.getTaille(), this.getTaille());
+//		
+//		/* affichage */
+//		this.getGui().reset();
+//		affiche();
+		this.getManager().addEvent(new BoidsSimuEvent(this.getManager().getCurrentDate()+1,this));
+		this.getManager().next();
 	}
 
 }

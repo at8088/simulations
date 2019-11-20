@@ -76,7 +76,9 @@ public class SchellingSimulator implements Simulable {
 //		}
 //		this.gui.reset();
 //		affiche();		
+		/**Ajouter un evenement qui s'executera au prochain appel de la methode next*/
 		this.manager.addEvent(new SchellingSimuEvent(this.manager.getCurrentDate()+1,this));
+		/**Executer l'evenement qui vient d'etre ajouter*/
 		this.manager.next();
 		
 		
